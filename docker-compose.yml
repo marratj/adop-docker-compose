@@ -46,6 +46,8 @@ gerrit-mysql:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "3306"
+  ports:
+    - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: ${PASSWORD_SQL}
     MYSQL_USER: ${GERRIT_MYSQL_USER}
@@ -62,6 +64,9 @@ gerrit:
   expose:
     - "8080"
     - "29418"
+  ports:
+    - "8080:8080"
+    - "29418:29418"
   environment:
     - "dependency:container==gerrit-mysql"
     - "REPO_PATH=/var/git/repos"
@@ -103,6 +108,8 @@ sensu-uchiwa:
     SENSU_DC_NAME: Sensu
   expose:
     - "3000"
+  ports:
+    - "3000:3000"
 
 sensu-api:
   container_name: sensu-api
@@ -112,6 +119,8 @@ sensu-api:
   command: api
   expose:
     - "4567"
+  ports:
+    - "4567:4567"
   environment:
     TRANSPORT_NAME: rabbitmq
     RABBITMQ_HOST: sensu-rabbitmq
@@ -153,6 +162,11 @@ sensu-rabbitmq:
     - "5671"
     - "15672"
     - "15671"
+  ports:
+    - "5672:5672"
+    - "5671:5671"
+    - "15672:15672"
+    - "15671:15671"
 
 sensu-redis:
   container_name: sensu-redis
@@ -161,6 +175,8 @@ sensu-redis:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "6379"
+  ports:
+    - "6379:6379"
 
 sonar-mysql:
   container_name: sonar-mysql
@@ -169,6 +185,8 @@ sonar-mysql:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "3306"
+  ports:
+    - "3306:3306"
   environment:
     MYSQL_ROOT_PASSWORD: ${PASSWORD_SQL}
     MYSQL_USER: ${SONAR_MYSQL_USER}
@@ -183,6 +201,8 @@ sonar:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "9000"
+  ports:
+    - "9000:9000"
   environment:
     - "dependency:container==sonar-mysql"
     - "SONARQUBE_JDBC_USERNAME=${SONAR_MYSQL_USER}"
@@ -207,6 +227,7 @@ jenkins:
   net: ${CUSTOM_NETWORK_NAME}
   ports:
     - "50000/tcp:50000/tcp"
+    - "8080/tcp:8080/tcp"
   expose:
     - "8080"
     - "50000"
@@ -277,6 +298,8 @@ selenium-hub:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "4444"
+  ports:
+    - "4444:4444"
 
 selenium-node-chrome:
   container_name: selenium-node-chrome
@@ -307,6 +330,8 @@ nexus:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "8081"
+  ports:
+    - "8081:8081"
   environment:
     NEXUS_BASE_URL: "${PROTO}://${TARGET_HOST}/nexus"
     LDAP_SEARCH_BASE: "${LDAP_FULL_DOMAIN}"
@@ -325,6 +350,8 @@ ldap-ltb:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "80"
+  ports:
+    - "80:80"
   environment:
     LDAP_LTB_URL: "ldap://${LDAP_SERVER}"
     LDAP_LTB_DN: "${LDAP_ADMIN},${LDAP_FULL_DOMAIN}"
@@ -338,6 +365,8 @@ ldap-phpadmin:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "80"
+  ports:
+    - "80:80"
   environment:
     LDAP_SERVER_NAME: "LDAP"
     LDAP_SERVER_HOST: "ldap"
@@ -352,6 +381,8 @@ registry:
   net: ${CUSTOM_NETWORK_NAME}
   expose:
     - "5000"
+  ports:
+    - "5000:5000"
   environment:
     REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
     REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry/fullchain.pem
